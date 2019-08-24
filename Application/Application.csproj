@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PricingRule\PricingRule.cs" />
     <Compile Include="PricingStrategyManager\PricingStrategyManager.cs" />
     <Compile Include="PricingStrategy\HighSupplyHighDemandStrategy.cs" />
     <Compile Include="PricingStrategy\HighSupplyLowDemandStrategy.cs" />

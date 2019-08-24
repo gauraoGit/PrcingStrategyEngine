@@ -1,4 +1,5 @@
-﻿using Application.PricingStrategyManager;
+﻿using System.Linq;
+using Application.PricingStrategyManager;
 using Domain.Model;
 
 namespace PrcingStrategyEngine
@@ -15,7 +16,7 @@ namespace PrcingStrategyEngine
     {
         public static void Main()
         {
-
+            Console.WriteLine("Input:");
             var strategyManager = new PricingStrategyManager();
             //Enter # of Products for which price to be find
             int noOfProducts = Convert.ToInt32(Console.ReadLine());
@@ -40,9 +41,30 @@ namespace PrcingStrategyEngine
                 }
             }
 
-            //int noOfSurveys = Convert.ToInt32(Console.ReadLine());
+            int noOfSurveys = Convert.ToInt32(Console.ReadLine());
+            for (int i = 0; i < noOfSurveys; i++)
+            {
+                string command = Console.ReadLine();
+                if (string.IsNullOrEmpty(command))
+                    throw new ArgumentNullException("command", "Command is not valid");
 
-            itemList.ForEach(x => Console.WriteLine(x.Name));
+                string[] commandSplit = command.Split(' ');
+
+                if (commandSplit.Length == 3)
+                {
+                    string itemName = commandSplit[0];
+                    string surveyName = commandSplit[1];
+                    double surveyPrice = Convert.ToDouble(commandSplit[2]);
+                    var product = itemList.FirstOrDefault(x => x.Name == itemName);
+                    if (product != null)
+                    {
+                        product.AddSurvey(new ItemSurvey() { ItemName = itemName, Price = surveyPrice, SurveyName = surveyName });
+                    }
+                }
+            }
+
+            Console.WriteLine("Output:");
+            itemList.ForEach(x=>{ Console.WriteLine("{0} {1}", x.Name, x.Price); });
             Console.ReadLine();
         }
 
