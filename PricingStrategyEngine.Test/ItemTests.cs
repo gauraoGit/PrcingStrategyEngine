@@ -196,6 +196,48 @@ namespace PricingStrategyEngine.Test
             Assert.AreEqual(expectedSurveyCount, item.SurveyCount, "Should not consider survey whose price lower than 50% of avrage price");
 
         }
-       
+        [TestMethod]
+        public void ItemPrice_WhenOnlyMultipleSurveyWithPriceMoreThan50PerOfAveragePrice_ShouldNotConsiderPriceAsItsDataError()
+        {
+            //Arrange
+            List<double> surveyList = new List<double>() { 10.0, 11, 12, 45 };
+            string productName = "ssd";
+
+            double expectedSurveyCount = 3;
+            //Act
+            surveyList.ForEach(x =>
+            {
+                var itemsurvey = new ItemSurvey() { ItemName = productName, Price = x, SurveyName = "xxx" };
+                item.AddSurvey(itemsurvey);
+
+            });
+
+            //Assert
+            Assert.AreEqual(expectedSurveyCount, item.SurveyCount, "Should not consider survey whose price more than 50% of average price");
+
+        }
+
+        [TestMethod]
+        public void ItemPrice_WhenOnlyMultipleSurveyWithPriceLessThan50PerOfAveragePrice_ShouldNotConsiderPriceAsItsDiscountedPrice()
+        {
+            //Arrange
+            List<double> surveyList = new List<double>() { 10.0, 11, 12, 2 };
+            string productName = "ssd";
+
+            double expectedSurveyCount = 3;
+            //Act
+            surveyList.ForEach(x =>
+            {
+                var itemsurvey = new ItemSurvey() { ItemName = productName, Price = x, SurveyName = "xxx" };
+                item.AddSurvey(itemsurvey);
+
+            });
+
+            //Assert
+            Assert.AreEqual(expectedSurveyCount, item.SurveyCount, "Should not consider survey whose price less than 50% of average price as its discounted price");
+
+        }
+
+
     }
 }
